@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { MovieCard } from "./components/MovieCard";
+import { MovieCard } from "./_components/MovieCard";
 import { useEffect, useState } from "react";
 import { apiClient } from "./api/axios";
 import { MovieProps } from "@/types/types";
@@ -25,7 +25,7 @@ export default function PopularMovies() {
    }, []);
 
    return (
-      <div className="container mx-auto px-6 flex flex-col gap-10">
+      <div className="container mx-auto px-4 xl:px-6 flex flex-col gap-10">
          <div className="pt-16">
             <h1 className="leading-tight">
                Discover movies,
