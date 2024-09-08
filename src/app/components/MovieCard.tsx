@@ -1,19 +1,18 @@
 import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { StarRating } from "@/app/components/StarRating";
 import { Plus, StarIcon } from "lucide-react";
-import { MovieCardProps } from "@/types/types";
+import { MovieProps } from "@/types/types";
 
 export function MovieCard({
-   movie: { title, poster_path, vote_average, vote_count, overview },
+   movie: { id, title, poster_path, vote_average, vote_count, overview },
 }: {
-   movie: MovieCardProps;
+   movie: MovieProps;
 }) {
 
    const handleCardClick = () => {
       if (window && typeof window !== "undefined") {
-         window.location.href = `/movie/${title}`;
+         window.location.href = `/movie/${id}`;
       }
    };
 

@@ -4,17 +4,16 @@ import { Button } from "@/components/ui/button";
 import { MovieCard } from "./components/MovieCard";
 import { useEffect, useState } from "react";
 import { apiClient } from "./api/axios";
-import { MovieCardProps } from "@/types/types";
+import { MovieProps } from "@/types/types";
 
 export default function PopularMovies() {
-   const [movies, setMovies] = useState<MovieCardProps[]>();
+   const [movies, setMovies] = useState<MovieProps[]>();
 
    const fetchMovies = async () => {
       try {
          const response = await apiClient.get(
             "/movie/popular?language=en-US&page=1"
          );
-         console.log(response);
          setMovies(response.data.results);
       } catch (error) {
          console.error(error);
