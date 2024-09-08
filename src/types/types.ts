@@ -18,6 +18,7 @@ export interface CastProps {
    name: string;
    character: string;
    profile_path: string;
+   gender: number;
 }
 
 export interface StarRatingProps {

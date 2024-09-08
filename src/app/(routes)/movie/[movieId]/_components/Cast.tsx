@@ -7,7 +7,7 @@ const Cast = ({ casts }: { casts: CastProps[] }) => {
       <section className="mb-32">
          <h2 className="font-semibold mb-8">Cast</h2>
          <div className="flex flex-row gap-6 overflow-x-scroll">
-            {casts.slice(0, 5).map((cast) => (
+            {casts.map((cast) => (
                <div key={cast.id} className="min-w-[200px] flex-shrink-0">
                   <CastCard cast={cast} />
                </div>
