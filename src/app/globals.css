@@ -8,6 +8,14 @@
   }
 }
 
+.albert-sans {
+  font-family: var(--font-albertSans);
+}
+
+h1 {
+  @apply text-5xl;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
