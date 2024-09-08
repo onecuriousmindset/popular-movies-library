@@ -8,6 +8,7 @@ import { MovieProps } from "@/types/types";
 import { Search } from "lucide-react";
 import SortButton from "./_components/SortButton";
 import { ScaleLoader } from "react-spinners";
+import { useSearchParams } from "next/navigation";
 
 export default function PopularMovies() {
    const [movies, setMovies] = useState<MovieProps[]>([]);
@@ -15,7 +16,10 @@ export default function PopularMovies() {
    const [loadingMore, setLoadingMore] = useState(false);
    const [currentPage, setCurrentPage] = useState(1);
    const [totalPages, setTotalPages] = useState(0);
-   const [sortedQuery, setSortedQuery] = useState("popularity.desc");
+   const searchParams = useSearchParams();
+   const [sortedQuery, setSortedQuery] = useState<string>(
+      searchParams.get("sort") || "popularity.desc"
+   );
 
    const fetchMovies = useCallback(
       async (page = 1) => {
@@ -85,7 +89,7 @@ export default function PopularMovies() {
                   <ScaleLoader />
                </div>
             ) : (
-               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border">
                   {movies.map((movie) => (
                      <MovieCard key={movie.id} movie={movie} />
                   ))}

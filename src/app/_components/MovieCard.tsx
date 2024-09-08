@@ -16,49 +16,52 @@ export function MovieCard({
    };
 
    return (
-      <Card className="overflow-hidden max-w-xs rounded-none border-black flex flex-col h-full">
-         <CardContent className="p-0 flex-grow">
-            <div className="relative">
-               <Image
-                  src={
-                     poster_path
-                        ? process.env.NEXT_PUBLIC_MOVIE_IMAGE_URL + poster_path
-                        : "/images/No-Image-Placeholder.png"
-                  }
-                  alt={title}
-                  className="w-full aspect-[2/3] object-cover cursor-pointer"
-                  width={500}
-                  height={750}
-                  onClick={handleCardClick}
-               />
-            </div>
-            <div className="p-6 flex flex-col h-full">
-               <div>
-                  <h3
+      <article>
+         <Card className="overflow-hidden max-w-xs rounded-none border-0 border-b border-r flex flex-col h-full">
+            <CardContent className="p-0 flex-grow">
+               <div className="relative">
+                  <Image
+                     src={
+                        poster_path
+                           ? process.env.NEXT_PUBLIC_MOVIE_IMAGE_URL +
+                             poster_path
+                           : "/images/No-Image-Placeholder.png"
+                     }
+                     alt={title}
+                     className="w-full aspect-[2/3] p-3 object-cover cursor-pointer"
+                     width={500}
+                     height={750}
                      onClick={handleCardClick}
-                     className="font-semibold cursor-pointer hover:underline text-2xl mb-1"
-                  >
-                     {title}
-                  </h3>
-                  <div className="flex items-center mb-4">
-                     <StarIcon
-                        fill="#eab308"
-                        className="w-4 h-4 text-yellow-500"
-                     />
-                     <span className="ml-1.5 text-sm text-gray-600">
-                        {vote_average.toFixed(1)} • {vote_count} reviews
-                     </span>
-                  </div>
+                  />
                </div>
-               <p className="line-clamp-3">{overview}</p>
-            </div>
-         </CardContent>
-         <CardFooter className="p-6 pt-0">
-            <Button variant="outline" className="w-full">
-               <Plus className="w-5 h-5 mr-2" />
-               Add to watchlist
-            </Button>
-         </CardFooter>
-      </Card>
+               <div className="p-6 flex flex-col h-full">
+                  <div>
+                     <h3
+                        onClick={handleCardClick}
+                        className="font-semibold cursor-pointer hover:underline text-2xl mb-1"
+                     >
+                        {title}
+                     </h3>
+                     <div className="flex items-center mb-4">
+                        <StarIcon
+                           fill="#eab308"
+                           className="w-4 h-4 text-yellow-500"
+                        />
+                        <span className="ml-1.5 text-sm text-gray-600">
+                           {vote_average.toFixed(1)} • {vote_count} reviews
+                        </span>
+                     </div>
+                  </div>
+                  <p className="line-clamp-3">{overview}</p>
+               </div>
+            </CardContent>
+            <CardFooter className="p-6 pt-0">
+               <Button variant="outline" className="w-full">
+                  <Plus className="w-5 h-5 mr-2" />
+                  Add to watchlist
+               </Button>
+            </CardFooter>
+         </Card>
+      </article>
    );
 }

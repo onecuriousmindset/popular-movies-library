@@ -12,7 +12,7 @@ const MovieHero = ({ movie }: { movie: MovieProps }) => {
          <div className="md:col-span-2 pt-4 md:pt-16 order-2 md:order-1">
             <h1 className="font-semibold mb-4 md:mb-8">{movie?.title}</h1>
             <div className="flex flex-col gap-2 mb-4">
-               <StarRating rating={5.4} maxRating={10} />
+               <StarRating rating={movie.vote_average} maxRating={10} />
                <span className="ml-0.5 text-sm md:text-base">
                   {movie.vote_average.toFixed(1)} • {movie.vote_count} votes
                </span>
