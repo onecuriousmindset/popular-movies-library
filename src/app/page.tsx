@@ -2,74 +2,105 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MovieCard } from "./_components/MovieCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { apiClient } from "./api/axios";
 import { MovieProps } from "@/types/types";
+import { Search } from "lucide-react";
+import SortButton from "./_components/SortButton";
+import { ScaleLoader } from "react-spinners";
 
 export default function PopularMovies() {
-   const [movies, setMovies] = useState<MovieProps[]>();
+   const [movies, setMovies] = useState<MovieProps[]>([]);
+   const [loading, setLoading] = useState(false);
+   const [loadingMore, setLoadingMore] = useState(false);
+   const [currentPage, setCurrentPage] = useState(1);
+   const [totalPages, setTotalPages] = useState(0);
+   const [sortedQuery, setSortedQuery] = useState("popularity.desc");
 
-   const fetchMovies = async () => {
-      try {
-         const response = await apiClient.get(
-            "/movie/popular?language=en-US&page=1"
-         );
-         setMovies(response.data.results);
-      } catch (error) {
-         console.error(error);
-      }
-   };
+   const fetchMovies = useCallback(
+      async (page = 1) => {
+         setLoading(page === 1);
+         setLoadingMore(page > 1);
+         try {
+            const { data } = await apiClient.get("discover/movie", {
+               params: {
+                  include_adult: false,
+                  language: "en-US",
+                  page,
+                  sort_by: sortedQuery,
+               },
+            });
+            setMovies((prev) =>
+               page === 1 ? data.results : [...prev, ...data.results]
+            );
+            setTotalPages(data.total_pages);
+         } catch (error) {
+            console.error(error);
+         } finally {
+            setLoading(false);
+            setLoadingMore(false);
+         }
+      },
+      [sortedQuery]
+   );
 
    useEffect(() => {
       fetchMovies();
-   }, []);
+   }, [sortedQuery, fetchMovies]);
+
+   const handleLoadMore = () => {
+      const nextPage = currentPage + 1;
+      fetchMovies(nextPage);
+      setCurrentPage(nextPage);
+   };
 
    return (
-      <div className="container mx-auto px-4 xl:px-6 flex flex-col gap-10">
-         <div className="pt-16">
+      <div className="container mx-auto px-4 xl:px-6 flex flex-col gap-10 mb-16">
+         <div className="pt-16 mb-8">
             <h1 className="leading-tight">
                Discover movies,
                <br />
                share your thoughts.
             </h1>
-            <div className="mt-12">
+            <div className="mt-12 relative">
                <Input
                   type="search"
-                  placeholder="Search movies or genres"
-                  className="max-w-md h-12 rounded-[50px]"
+                  placeholder="Search for movies"
+                  className="max-w-md h-12 rounded-[50px] pl-12"
                />
+               <Search className="absolute top-3 left-4 w-6 h-6 text-gray-400" />
             </div>
-            <Button variant="ghost" className="mb-8 mt-3 h-12">
-               Browse all movies <span className="ml-2">→</span>
-            </Button>
          </div>
 
          <section>
-            <div className="flex flex-wrap gap-4 mb-4">
-               {[
-                  "Trending",
-                  "Action",
-                  "Comedy",
-                  "Drama",
-                  "Sci-Fi",
-                  "New releases",
-               ].map((category) => (
-                  <Button
-                     key={category}
-                     variant={category === "Trending" ? "default" : "outline"}
-                     className="rounded-full h-12 font-semibold"
-                  >
-                     {category}
-                  </Button>
-               ))}
+            <div className="mb-4">
+               <SortButton
+                  sortedQuery={sortedQuery}
+                  setSortedQuery={setSortedQuery}
+               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-               {movies &&
-                  movies.length > 0 &&
-                  movies.map((movie) => (
+
+            {loading ? (
+               <div className="flex justify-center items-center">
+                  <ScaleLoader />
+               </div>
+            ) : (
+               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {movies.map((movie) => (
                      <MovieCard key={movie.id} movie={movie} />
                   ))}
-            </div>
+               </div>
+            )}
+
+            {!loading && currentPage < totalPages && (
+               <Button
+                  onClick={handleLoadMore}
+                  className="mt-8 h-12 w-full"
+                  disabled={loadingMore}
+               >
+                  {loadingMore ? "Loading..." : "Load more"}
+               </Button>
+            )}
          </section>
       </div>
    );

@@ -26,3 +26,25 @@ export interface StarRatingProps {
    maxRating?: number;
    className?: string;
 }
+
+export interface AuthorDetails {
+   name: string;
+   username: string;
+   avatar_path: string;
+   rating: number;
+}
+
+export interface ReviewProps {
+   author: string;
+   author_details: AuthorDetails;
+   content: string;
+   created_at: string;
+   id: string;
+   updated_at: string;
+   url: string;
+}
+
+export interface SortButtonProps {
+   setSortedQuery: (query: string) => void;
+   sortedQuery: string;
+}

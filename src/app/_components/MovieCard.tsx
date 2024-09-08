@@ -9,7 +9,6 @@ export function MovieCard({
 }: {
    movie: MovieProps;
 }) {
-
    const handleCardClick = () => {
       if (window && typeof window !== "undefined") {
          window.location.href = `/movie/${id}`;
@@ -21,7 +20,11 @@ export function MovieCard({
          <CardContent className="p-0 flex-grow">
             <div className="relative">
                <Image
-                  src={process.env.NEXT_PUBLIC_MOVIE_IMAGE_URL + poster_path}
+                  src={
+                     poster_path
+                        ? process.env.NEXT_PUBLIC_MOVIE_IMAGE_URL + poster_path
+                        : "/images/No-Image-Placeholder.png"
+                  }
                   alt={title}
                   className="w-full aspect-[2/3] object-cover cursor-pointer"
                   width={500}
@@ -31,9 +34,17 @@ export function MovieCard({
             </div>
             <div className="p-6 flex flex-col h-full">
                <div>
-                  <h3 onClick={handleCardClick} className="font-semibold cursor-pointer hover:underline text-2xl mb-1">{title}</h3>
+                  <h3
+                     onClick={handleCardClick}
+                     className="font-semibold cursor-pointer hover:underline text-2xl mb-1"
+                  >
+                     {title}
+                  </h3>
                   <div className="flex items-center mb-4">
-                     <StarIcon fill="#eab308" className="w-4 h-4 text-yellow-500" />
+                     <StarIcon
+                        fill="#eab308"
+                        className="w-4 h-4 text-yellow-500"
+                     />
                      <span className="ml-1.5 text-sm text-gray-600">
                         {vote_average.toFixed(1)} • {vote_count} reviews
                      </span>
