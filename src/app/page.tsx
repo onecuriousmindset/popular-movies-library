@@ -9,6 +9,7 @@ import { Search } from "lucide-react";
 import SortButton from "./_components/SortButton";
 import { ScaleLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
+import { SearchMovies } from "./_components/SearchMovies";
 
 export default function PopularMovies() {
    const [movies, setMovies] = useState<MovieProps[]>([]);
@@ -67,12 +68,7 @@ export default function PopularMovies() {
                share your thoughts.
             </h1>
             <div className="mt-12 relative">
-               <Input
-                  type="search"
-                  placeholder="Search for movies"
-                  className="max-w-md h-12 rounded-[50px] pl-12"
-               />
-               <Search className="absolute top-3 left-4 w-6 h-6 text-gray-400" />
+               <SearchMovies />
             </div>
          </div>
 
