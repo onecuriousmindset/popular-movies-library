@@ -5,11 +5,10 @@ import { MovieCard } from "./_components/MovieCard";
 import { useEffect, useState, useCallback } from "react";
 import { apiClient } from "./api/axios";
 import { MovieProps } from "@/types/types";
-import { Search } from "lucide-react";
-import SortButton from "./_components/SortButton";
 import { ScaleLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
 import { SearchMovies } from "./_components/SearchMovies";
+import SortButton from "./_components/SortButton";
 
 export default function PopularMovies() {
    const [movies, setMovies] = useState<MovieProps[]>([]);
@@ -18,9 +17,7 @@ export default function PopularMovies() {
    const [currentPage, setCurrentPage] = useState(1);
    const [totalPages, setTotalPages] = useState(0);
    const searchParams = useSearchParams();
-   const [sortedQuery, setSortedQuery] = useState<string>(
-      searchParams.get("sort") || "popularity.desc"
-   );
+   const sortedQuery = searchParams.get("sort") || "popularity.desc";
 
    const fetchMovies = useCallback(
       async (page = 1) => {
@@ -35,8 +32,8 @@ export default function PopularMovies() {
                   sort_by: sortedQuery,
                },
             });
-            setMovies((prev) =>
-               page === 1 ? data.results : [...prev, ...data.results]
+            setMovies((prevMovies) =>
+               page === 1 ? data.results : [...prevMovies, ...data.results]
             );
             setTotalPages(data.total_pages);
          } catch (error) {
@@ -51,7 +48,7 @@ export default function PopularMovies() {
 
    useEffect(() => {
       fetchMovies();
-   }, [sortedQuery, fetchMovies]);
+   }, [fetchMovies]);
 
    const handleLoadMore = () => {
       const nextPage = currentPage + 1;
@@ -76,7 +73,7 @@ export default function PopularMovies() {
             <div className="mb-4">
                <SortButton
                   sortedQuery={sortedQuery}
-                  setSortedQuery={setSortedQuery}
+                  setSortedQuery={() => {}}
                />
             </div>
 
