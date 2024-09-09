@@ -1,5 +1,4 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MovieCard } from "./_components/MovieCard";
 import { useEffect, useState, useCallback } from "react";
