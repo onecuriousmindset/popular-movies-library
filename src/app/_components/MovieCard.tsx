@@ -48,7 +48,7 @@ export function MovieCard({
                            className="w-4 h-4 text-yellow-500"
                         />
                         <span className="ml-1.5 text-sm text-gray-600">
-                           {vote_average.toFixed(1)} • {vote_count} reviews
+                           {vote_average?.toFixed(1)} • {vote_count} reviews
                         </span>
                      </div>
                   </div>
