@@ -7,6 +7,6 @@ export const apiClient = axios.create({
    headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_MOVIE_DB_AUTH_KEY}`,
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_MOVIE_DB_API_KEY}`,
    },
 });
