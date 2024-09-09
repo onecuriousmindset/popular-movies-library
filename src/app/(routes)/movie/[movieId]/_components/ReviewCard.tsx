@@ -1,40 +1,19 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { User } from "lucide-react";
 import { StarRating } from "@/app/_components/StarRating";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import { formatDistanceToNow } from "date-fns";
+import { ReviewCardProps } from "@/types/types";
 
-export interface AuthorDetails {
-   name: string;
-   username: string;
-   avatar_path: string;
-   rating: number;
-}
-
-export interface ReviewProps {
-   author: string;
-   author_details: AuthorDetails;
-   content: string;
-   created_at: string;
-   id: string;
-   updated_at: string;
-   url: string;
-}
-
-export default function ReviewCard({ review }: { review: ReviewProps }) {
-   const formatDate = (dateString: string) => {
-      const date = new Date(dateString);
-      const now = new Date();
-      const diffTime = Math.abs(now.getTime() - date.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return `${diffDays} days ago`;
-   };
+export default function ReviewCard({ review }: { review: ReviewCardProps }) {
+   const formatDate = (dateString: string) =>
+      formatDistanceToNow(new Date(dateString), { addSuffix: true });
 
    return (
-      <Card className="w-full border-none shadow-none">
-         <CardHeader className="flex flex-row items-center gap-4">
-            <Avatar className="h-11 w-11">
+      <div className="w-full border-none shadow-none flex flex-col gap-4 py-6">
+         <div className="flex flex-row items-center gap-4 mb-0">
+            <Avatar className="h-11 w-11 mt-1">
                <AvatarImage
                   src={
                      process.env.NEXT_PUBLIC_MOVIE_IMAGE_URL +
@@ -48,16 +27,22 @@ export default function ReviewCard({ review }: { review: ReviewProps }) {
             </Avatar>
             <div className="flex flex-col">
                <span className="font-semibold">{review.author}</span>
-               <div className="flex items-center gap-2"></div>
+               <div className="flex items-center gap-2">
+                  {/* Dummy Data */}
+                  <span className="text-sm">
+                     Level {Math.floor(Math.random() * 10) + 1} •{" "}
+                     {Math.floor(Math.random() * 100) + 1} reviews
+                  </span>
+               </div>
             </div>
-         </CardHeader>
-         <CardContent>
-            <div className="flex items-center gap-2 mb-4">
+         </div>
+         <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                <StarRating
                   rating={review.author_details.rating}
                   maxRating={10}
                />
-               <span className="ml-auto text-sm text-muted-foreground">
+               <span className="sm:ml-auto text-sm text-muted-foreground">
                   {formatDate(review.created_at)}
                </span>
             </div>
@@ -65,7 +50,7 @@ export default function ReviewCard({ review }: { review: ReviewProps }) {
             <ReactMarkdown rehypePlugins={[rehypeRaw]}>
                {review.content.replace(/\r\n/g, "<br />")}
             </ReactMarkdown>
-         </CardContent>
-      </Card>
+         </div>
+      </div>
    );
 }

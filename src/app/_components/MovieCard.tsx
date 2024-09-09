@@ -48,7 +48,7 @@ export function MovieCard({
                            className="w-4 h-4 text-yellow-500"
                         />
                         <span className="ml-1.5 text-sm text-gray-600">
-                           {vote_average?.toFixed(1)} • {vote_count} reviews
+                           {vote_average?.toFixed(1)} • {vote_count} votes
                         </span>
                      </div>
                   </div>
@@ -56,9 +56,13 @@ export function MovieCard({
                </div>
             </CardContent>
             <CardFooter className="p-6 pt-0">
-               <Button variant="outline" className="w-full">
-                  <Plus className="w-5 h-5 mr-2" />
-                  Add to watchlist
+               <Button
+                  onClick={handleCardClick}
+                  className="w-full"
+                  variant="outline"
+               >
+                  <Plus className="w-4 h-4 mr-2" />
+                  View Details
                </Button>
             </CardFooter>
          </Card>
