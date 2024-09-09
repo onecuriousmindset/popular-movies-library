@@ -7,15 +7,14 @@ import {
    SelectValue,
 } from "@/components/ui/select";
 import { SortButtonProps } from "@/types/types";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const SortButton = ({ sortedQuery, setSortedQuery }: SortButtonProps) => {
    const router = useRouter();
-   const searchParams = useSearchParams();
 
    const handleValueChange = (value: string) => {
       setSortedQuery(value);
-      const currentParams = new URLSearchParams(searchParams.toString());
+      const currentParams = new URLSearchParams(window.location.search);
       currentParams.set("sort", value);
       router.push(`?${currentParams.toString()}`);
    };

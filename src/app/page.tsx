@@ -1,13 +1,12 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { MovieCard } from "./_components/MovieCard";
 import { useEffect, useState, useCallback } from "react";
 import { apiClient } from "./api/axios";
 import { MovieProps } from "@/types/types";
-import { ScaleLoader } from "react-spinners";
-import { useSearchParams } from "next/navigation";
 import { SearchMovies } from "./_components/SearchMovies";
 import SortButton from "./_components/SortButton";
+import { Button } from "@/components/ui/button";
+import { MovieCard } from "./_components/MovieCard";
+import Loading from "./_components/Loading";
 
 export default function PopularMovies() {
    const [movies, setMovies] = useState<MovieProps[]>([]);
@@ -15,10 +14,7 @@ export default function PopularMovies() {
    const [loadingMoreMovies, setLoadingMoreMovies] = useState(false);
    const [currentPage, setCurrentPage] = useState(1);
    const [totalPages, setTotalPages] = useState(0);
-
-   // Get the sort order from the URL
-   const searchParams = useSearchParams();
-   const sortOrder = searchParams.get("sort") || "popularity.desc";
+   const [sortedQuery, setSortedQuery] = useState("popularity.desc");
 
    const updateLoadingState = (isLoading: boolean, isLoadingMore: boolean) => {
       setLoadingMovies(isLoading);
@@ -34,7 +30,7 @@ export default function PopularMovies() {
                   include_adult: false,
                   language: "en-US",
                   page,
-                  sort_by: sortOrder,
+                  sort_by: sortedQuery,
                },
             });
             setMovies((prevMovies) =>
@@ -47,12 +43,12 @@ export default function PopularMovies() {
             updateLoadingState(false, false);
          }
       },
-      [sortOrder]
+      [sortedQuery]
    );
 
    useEffect(() => {
       fetchMovies();
-   }, [fetchMovies]);
+   }, [fetchMovies, sortedQuery]);
 
    const onLoadMoreClick = () => {
       const nextPage = currentPage + 1;
@@ -75,17 +71,13 @@ export default function PopularMovies() {
 
          <section>
             <div className="mb-4">
-               <SortButton sortedQuery={sortOrder} setSortedQuery={() => {}} />
+               <SortButton
+                  sortedQuery={sortedQuery}
+                  setSortedQuery={setSortedQuery}
+               />
             </div>
 
-            {/** Show loading spinner if movies are not loaded */}
-            {loadingMovies ? (
-               <div className="flex justify-center items-center">
-                  <ScaleLoader />
-               </div>
-            ) : (
-               <MovieGrid movies={movies} />
-            )}
+            {loadingMovies ? <Loading /> : <MovieGrid movies={movies} />}
 
             {!loadingMovies && currentPage < totalPages && (
                <LoadMoreButton

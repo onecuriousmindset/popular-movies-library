@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 import Cast from "./_components/Cast";
 import MovieHero from "./_components/MovieHero";
 import Reviews from "./_components/Reviews";
-import { ScaleLoader } from "react-spinners";
+import Loading from "@/app/_components/Loading";
 
 // Helper function to manage loading states
 const updateLoadingState = (
@@ -38,7 +38,6 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
       }
    }, [movieId]);
 
-
    const fetchMovieReviews = useCallback(
       async (page = 1) => {
          updateLoadingState(setLoadingMoreReviews, page > 1);
@@ -65,19 +64,13 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
       fetchMovieReviews();
    }, [fetchMovieDetails, fetchMovieReviews]);
 
-
    const handleLoadMoreReviews = () => {
       const nextPage = currentPage + 1;
       fetchMovieReviews(nextPage);
       setCurrentPage(nextPage);
    };
 
-   if (!movie)
-      return (
-         <div className="flex justify-center items-center h-screen">
-            <ScaleLoader loading={true} />
-         </div>
-      );
+   if (!movie) return <Loading />;
 
    return (
       <div className="container mx-auto px-4 xl:px-6">
