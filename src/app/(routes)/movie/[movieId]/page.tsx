@@ -1,21 +1,30 @@
 "use client";
 import { apiClient } from "@/app/api/axios";
-import { MovieProps } from "@/types/types";
+import { MovieProps, ReviewCardProps } from "@/types/types";
 import { useEffect, useState, useCallback } from "react";
 import Cast from "./_components/Cast";
 import MovieHero from "./_components/MovieHero";
 import Reviews from "./_components/Reviews";
+import { ScaleLoader } from "react-spinners";
+
+// Helper function to manage loading states
+const updateLoadingState = (
+   setState: React.Dispatch<React.SetStateAction<boolean>>,
+   isLoading: boolean
+) => {
+   setState(isLoading);
+};
 
 const MoviePage = ({ params }: { params: { movieId: string } }) => {
    const { movieId } = params;
-   const [movie, setMovie] = useState<MovieProps | null>(null);
-   const [reviews, setReviews] = useState([]);
+   const [movie, setMovie] = useState<MovieProps>();
+   const [reviews, setReviews] = useState<ReviewCardProps[]>([]);
    const [currentPage, setCurrentPage] = useState(1);
    const [totalPages, setTotalPages] = useState(0);
    const [totalReviews, setTotalReviews] = useState(0);
-   const [loadingMore, setLoadingMore] = useState(false);
+   const [loadingMoreReviews, setLoadingMoreReviews] = useState(false);
 
-   const fetchMovie = useCallback(async () => {
+   const fetchMovieDetails = useCallback(async () => {
       try {
          const { data } = await apiClient.get(`/movie/${movieId}`, {
             params: {
@@ -25,13 +34,14 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
          });
          setMovie({ ...data, videos: data.videos.results });
       } catch (error) {
-         console.error(error);
+         // TODO: Add user notification (toast or alert) for better UX
       }
    }, [movieId]);
 
-   const fetchReviews = useCallback(
+
+   const fetchMovieReviews = useCallback(
       async (page = 1) => {
-         setLoadingMore(page > 1);
+         updateLoadingState(setLoadingMoreReviews, page > 1);
          try {
             const { data } = await apiClient.get(`/movie/${movieId}/reviews`, {
                params: { language: "en-US", page },
@@ -42,34 +52,40 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
             setTotalReviews(data.total_results);
             setTotalPages(data.total_pages);
          } catch (error) {
-            console.error(error);
+            // TODO: Add user notification (toast or alert) for better UX
          } finally {
-            setLoadingMore(false);
+            updateLoadingState(setLoadingMoreReviews, false);
          }
       },
       [movieId]
    );
 
    useEffect(() => {
-      fetchMovie();
-      fetchReviews();
-   }, [fetchMovie, fetchReviews]);
+      fetchMovieDetails();
+      fetchMovieReviews();
+   }, [fetchMovieDetails, fetchMovieReviews]);
 
-   const handleLoadMore = () => {
+
+   const handleLoadMoreReviews = () => {
       const nextPage = currentPage + 1;
-      fetchReviews(nextPage);
+      fetchMovieReviews(nextPage);
       setCurrentPage(nextPage);
    };
 
-   if (!movie) return null;
+   if (!movie)
+      return (
+         <div className="flex justify-center items-center h-screen">
+            <ScaleLoader loading={true} />
+         </div>
+      );
 
    return (
       <div className="container mx-auto px-4 xl:px-6">
          <MovieHero movie={movie} />
          <Cast casts={movie.credits.cast} />
          <Reviews
-            loadingMore={loadingMore}
-            handleLoadMore={handleLoadMore}
+            loadingMore={loadingMoreReviews}
+            handleLoadMore={handleLoadMoreReviews}
             currentPage={currentPage}
             totalPages={totalPages}
             totalReviews={totalReviews}

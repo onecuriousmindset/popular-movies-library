@@ -11,24 +11,30 @@ import SortButton from "./_components/SortButton";
 
 export default function PopularMovies() {
    const [movies, setMovies] = useState<MovieProps[]>([]);
-   const [loading, setLoading] = useState(false);
-   const [loadingMore, setLoadingMore] = useState(false);
+   const [loadingMovies, setLoadingMovies] = useState(false);
+   const [loadingMoreMovies, setLoadingMoreMovies] = useState(false);
    const [currentPage, setCurrentPage] = useState(1);
    const [totalPages, setTotalPages] = useState(0);
+
+   // Get the sort order from the URL
    const searchParams = useSearchParams();
-   const sortedQuery = searchParams.get("sort") || "popularity.desc";
+   const sortOrder = searchParams.get("sort") || "popularity.desc";
+
+   const updateLoadingState = (isLoading: boolean, isLoadingMore: boolean) => {
+      setLoadingMovies(isLoading);
+      setLoadingMoreMovies(isLoadingMore);
+   };
 
    const fetchMovies = useCallback(
       async (page = 1) => {
-         setLoading(page === 1);
-         setLoadingMore(page > 1);
+         updateLoadingState(page === 1, page > 1);
          try {
-            const { data } = await apiClient.get("discover/movie", {
+            const { data } = await apiClient.get("/discover/movie", {
                params: {
                   include_adult: false,
                   language: "en-US",
                   page,
-                  sort_by: sortedQuery,
+                  sort_by: sortOrder,
                },
             });
             setMovies((prevMovies) =>
@@ -36,20 +42,19 @@ export default function PopularMovies() {
             );
             setTotalPages(data.total_pages);
          } catch (error) {
-            console.error(error);
+            // TODO: Add user notification (toast or alert) for better UX
          } finally {
-            setLoading(false);
-            setLoadingMore(false);
+            updateLoadingState(false, false);
          }
       },
-      [sortedQuery]
+      [sortOrder]
    );
 
    useEffect(() => {
       fetchMovies();
    }, [fetchMovies]);
 
-   const handleLoadMore = () => {
+   const onLoadMoreClick = () => {
       const nextPage = currentPage + 1;
       fetchMovies(nextPage);
       setCurrentPage(nextPage);
@@ -70,34 +75,49 @@ export default function PopularMovies() {
 
          <section>
             <div className="mb-4">
-               <SortButton
-                  sortedQuery={sortedQuery}
-                  setSortedQuery={() => {}}
-               />
+               <SortButton sortedQuery={sortOrder} setSortedQuery={() => {}} />
             </div>
 
-            {loading ? (
+            {/** Show loading spinner if movies are not loaded */}
+            {loadingMovies ? (
                <div className="flex justify-center items-center">
                   <ScaleLoader />
                </div>
             ) : (
-               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border">
-                  {movies.map((movie) => (
-                     <MovieCard key={movie.id} movie={movie} />
-                  ))}
-               </div>
+               <MovieGrid movies={movies} />
             )}
 
-            {!loading && currentPage < totalPages && (
-               <Button
-                  onClick={handleLoadMore}
-                  className="mt-8 h-12 w-full"
-                  disabled={loadingMore}
-               >
-                  {loadingMore ? "Loading..." : "Load more"}
-               </Button>
+            {!loadingMovies && currentPage < totalPages && (
+               <LoadMoreButton
+                  onClick={onLoadMoreClick}
+                  loadingMore={loadingMoreMovies}
+               />
             )}
          </section>
       </div>
    );
 }
+
+const MovieGrid = ({ movies }: { movies: MovieProps[] }) => (
+   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border">
+      {movies.map((movie) => (
+         <MovieCard key={movie.id} movie={movie} />
+      ))}
+   </div>
+);
+
+const LoadMoreButton = ({
+   onClick,
+   loadingMore,
+}: {
+   onClick: () => void;
+   loadingMore: boolean;
+}) => (
+   <Button
+      onClick={onClick}
+      className="mt-8 h-12 w-full"
+      disabled={loadingMore}
+   >
+      {loadingMore ? "Loading..." : "Load more"}
+   </Button>
+);

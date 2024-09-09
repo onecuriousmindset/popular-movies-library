@@ -16,8 +16,8 @@ const SortButton = ({ sortedQuery, setSortedQuery }: SortButtonProps) => {
    const handleValueChange = (value: string) => {
       setSortedQuery(value);
       const currentParams = new URLSearchParams(searchParams.toString());
-      currentParams.set("sort", value); // Update the 'sort' query parameter
-      router.push(`?${currentParams.toString()}`); // Push new URL with updated query
+      currentParams.set("sort", value);
+      router.push(`?${currentParams.toString()}`);
    };
 
    return (
