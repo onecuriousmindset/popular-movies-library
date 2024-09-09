@@ -17,7 +17,7 @@ export function MovieCard({
 
    return (
       <article>
-         <Card className="overflow-hidden max-w-xs -none border-0 border-b border-r flex flex-col h-full">
+         <Card className="overflow-hidden max-w-xs -none border border-b-0 sm:border-0 sm:border-b sm:border-r flex flex-col h-full">
             <CardContent className="p-0 flex-grow">
                <div className="relative">
                   <Image

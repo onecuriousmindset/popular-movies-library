@@ -44,7 +44,7 @@ const MoviePoster = ({
 
 const MovieDetails = ({ movie }: { movie: MovieProps }) => (
    <div className="space-y-6">
-      <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+      <h1 className="font-bold leading-tight">
          {movie.title}
       </h1>
       <div className="flex flex-wrap items-center gap-4 text-sm md:text-base">
@@ -65,7 +65,7 @@ const MovieDetails = ({ movie }: { movie: MovieProps }) => (
       </div>
       <div className="flex items-center gap-4">
          <StarRating rating={movie.vote_average} maxRating={10} />
-         <span className="text-sm md:text-base">
+         <span className="text-sm">
             {movie.vote_average?.toFixed(1)} •{" "}
             {movie.vote_count.toLocaleString()} votes
          </span>
@@ -99,7 +99,7 @@ const MovieHero = ({ movie }: { movie: MovieProps }) => {
 
    return (
       <section className="relative overflow-hidden">
-         <div className="relative z-10 container mx-auto px-4 py-16">
+         <div className="relative z-10 container mx-auto pt-4 pb-16">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-20 items-center">
                <div className="md:col-span-1 order-1 md:order-2">
                   <MoviePoster
