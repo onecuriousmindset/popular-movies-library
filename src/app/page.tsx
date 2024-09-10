@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import { apiClient } from "./api/axios";
+import { apiClient } from "@/lib/axios";
 import { MovieProps } from "@/types/types";
-import { SearchMovies } from "./_components/SearchMovies";
-import SortButton from "./_components/SortButton";
-import { Button } from "@/components/ui/button";
-import { MovieCard } from "./_components/MovieCard";
-import Loading from "./_components/Loading";
+import { SearchMovies } from "../components/SearchMovies";
+import SortButton from "../components/SortButton";
+import { Button } from "@/components/shadcn/button";
+import { MovieCard } from "../components/MovieCard";
+import Loading from "../components/Loading";
 
 export default function PopularMovies() {
    const [movies, setMovies] = useState<MovieProps[]>([]);

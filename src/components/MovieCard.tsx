@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/shadcn/card";
+import { Button } from "@/components/shadcn/button";
 import { Plus, StarIcon } from "lucide-react";
 import { MovieProps } from "@/types/types";
 

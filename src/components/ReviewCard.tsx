@@ -1,6 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+   Avatar,
+   AvatarFallback,
+   AvatarImage,
+} from "@/components/shadcn/avatar";
 import { User } from "lucide-react";
-import { StarRating } from "@/app/_components/StarRating";
+import { StarRating } from "@/components/StarRating";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { formatDistanceToNow } from "date-fns";

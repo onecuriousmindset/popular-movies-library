@@ -1,6 +1,6 @@
 import React from "react";
-import { StarRating } from "@/app/_components/StarRating";
-import { Button } from "@/components/ui/button";
+import { StarRating } from "@/components/StarRating";
+import { Button } from "@/components/shadcn/button";
 import { MovieProps } from "@/types/types";
 import { PlayIcon, CalendarIcon, ClockIcon } from "lucide-react";
 import Image from "next/image";
@@ -44,9 +44,7 @@ const MoviePoster = ({
 
 const MovieDetails = ({ movie }: { movie: MovieProps }) => (
    <div className="space-y-6">
-      <h1 className="font-bold leading-tight">
-         {movie.title}
-      </h1>
+      <h1 className="font-bold leading-tight">{movie.title}</h1>
       <div className="flex flex-wrap items-center gap-4 text-sm md:text-base">
          <div className="flex items-center">
             <CalendarIcon className="w-4 h-4 mr-2" />

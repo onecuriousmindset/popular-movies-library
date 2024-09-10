@@ -1,11 +1,11 @@
 "use client";
-import { apiClient } from "@/app/api/axios";
+import { apiClient } from "@/lib/axios";
 import { MovieProps, ReviewCardProps } from "@/types/types";
 import { useEffect, useState, useCallback } from "react";
-import Cast from "./_components/Cast";
-import MovieHero from "./_components/MovieHero";
-import Reviews from "./_components/Reviews";
-import Loading from "@/app/_components/Loading";
+import Cast from "../../../../components/Cast";
+import MovieHero from "../../../../components/MovieHero";
+import Reviews from "../../../../components/Reviews";
+import Loading from "@/components/Loading";
 
 // Helper function to manage loading states
 const updateLoadingState = (

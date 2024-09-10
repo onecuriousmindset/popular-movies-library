@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/shadcn/input";
 import { ChevronRight, Search } from "lucide-react";
 import { MovieProps } from "@/types/types";
-import { apiClient } from "../api/axios";
+import { apiClient } from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 

@@ -5,7 +5,7 @@ import {
    SelectItem,
    SelectTrigger,
    SelectValue,
-} from "@/components/ui/select";
+} from "@/components/shadcn/select";
 import { SortButtonProps } from "@/types/types";
 import { useRouter } from "next/navigation";
 

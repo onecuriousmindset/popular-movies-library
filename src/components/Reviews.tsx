@@ -1,7 +1,7 @@
 import React from "react";
 import ReviewCard from "./ReviewCard";
 import { ReviewsProps } from "@/types/types";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shadcn/button";
 import { ArrowDown } from "lucide-react";
 
 const Reviews = ({
@@ -48,7 +48,6 @@ const Reviews = ({
       </section>
    );
 };
-
 
 const LoadMoreButton = ({
    loadingMore,
