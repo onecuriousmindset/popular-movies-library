@@ -44,7 +44,7 @@ This project is a simple movie library application built with Next.js. It allows
    ```plaintext
    NEXT_PUBLIC_API_URL=https://api.themoviedb.org/3
    NEXT_PUBLIC_MOVIE_DB_API_KEY=your_api_key
-   NEXT_PUBLIC_MOVIE_IMAGE_URL=https://image.tmdb.org/t/p/w500
+   NEXT_PUBLIC_MOVIE_IMAGE_URL=https://media.themoviedb.org/t/p/w440_and_h660_face
    ```
 
 5. Start the development server:
